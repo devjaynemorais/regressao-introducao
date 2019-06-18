@@ -85,7 +85,7 @@ No olho:
 ```{r}
 ggplot(countyComplete, aes(x = hs_grad, y = poverty)) + 
   geom_point(alpha = 0.4, size = .8) + 
-  geom_abline(slope = 0, intercept = 20, color  = "red") 
+  geom_abline(slope = -0.85, intercept = 85, color  = "red") 
 ```
 
 Quantificando a qualidade do modelo:
