@@ -16,6 +16,7 @@ library(tidyverse)
 library(ggbeeswarm)
 library(modelr)
 library(broom)
+options(scipen = 999)
 theme_set(theme_bw())
 ```
 
@@ -23,9 +24,80 @@ theme_set(theme_bw())
 
 Agora faremos o ajuste de um modelo linear para uma nova relação: 
 
+Estamos interessados na relação entre bacharéis (`bachelors`) e renda per capta (`per_capita_income`):
+
+## EDA, sempre
+
+SEMPRE iniciamos com uma EDA dos dados!
+
+```{r}
+countyComplete %>% 
+  ggplot(aes(x = bachelors)) + 
+  geom_histogram(binwidth = 5)
+
+countyComplete %>% 
+  ggplot(aes(x = per_capita_income)) + 
+  geom_density(binwidth = 5)
+```
+
+
+
 ```{r}
 countyComplete %>% 
   ggplot(aes(x = bachelors, y = per_capita_income)) + 
-  geom_point(alpha = 0.4, size = .5)
+  geom_point(alpha = 0.4, size = .5) + 
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
+```{r}
+mod <- lm(bachelors ~ per_capita_income, 
+          data = countyComplete)
+
+# sintaxe base R, que não usaremos
+# summary(mod)
+# confint(mod)
+
+# broom, que recomendo: 
+tidy(mod)
+glance(mod) 
+```
+Estimativas/previsões do modelo:
+
+```{r}
+countyComplete %>% 
+  select(bachelors, per_capita_income) %>% 
+  add_predictions(model = mod) %>% # add o que o modelo estima p cada hs_grad
+  ggplot(mapping = aes(x = per_capita_income, y = bachelors)) + 
+  geom_point(alpha = 0.4, size = .1) + 
+  geom_line(aes(y = pred), colour = "red")  + 
+  geom_abline(intercept = 5, slope = 0.01, color  = "darkblue") 
+```
+
+
+Resíduos do modelo:
+
+```{r}
+countyComplete %>% 
+  add_residuals(model = mod) %>% 
+  ggplot(aes(per_capita_income, resid)) + 
+  geom_point(alpha = .4, size = .5) + 
+  geom_hline(yintercept = 0, colour = "blue")
+```
+
+
+-------------
+
+A conclusão a eque chegamos com um modelo assim é algo como:
+
+VarIndep1 = pobreza
+VarDep = escolaridade
+
+
+VarIndep1 = bachareis
+VarDep = renda per capita
+
+> Regressão linear simples foi utilizada para analisar a associação entre VarIndep1 e VarDep. Os resultados da regressão indicam que um modelo no formato VarDep = XXX.VarIndep1 + YYY explicam XX,XX% da variância da variável de resposta (R2 = XX,XX). O aumento de 1 unidade de VarIndep1 medida como/em [unidade] produz uma mudança de xxx em VarDep. Portanto...
+
+>> Regressão linear simples foi utilizada para analisar a associação entre o nível bacharelado e a renda per capita. Os resultados da regressão indicam que um modelo no formato Renda Per Capita = 0.001*Bacharél - 9.53 explicam 62.78% da variância da variável de resposta (R2 = 0.62). O aumento de 1 unidade de Bacharél medida como porcentagem de pessoas que possuem o nível de bacharél produz um aumento de 0.001 na porcentagem esperada abaixo/acima da linha da Renda Per Capita.. Portanto...
+
+> Regressão linear simples foi utilizada para analisar a associação entre bacharéis e Renda Per Capita. Os resultados da regressão indicam que um modelo no formato ?bachareis? = 0.001*RendaPerCapita -9.53 explicam 62,78% da variância da variável de resposta (R2 = 0.62). O aumento de 1 unidade de RendaPerCapta medida como porcentagem de pessoas que completam o nível de bacharelado produz um aumento de 0.001 na porcetagem esperada de pessoas ?abaixo/acima? da linha de rendaPerCapita. Portanto...
