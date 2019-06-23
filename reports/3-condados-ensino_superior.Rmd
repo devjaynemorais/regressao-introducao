@@ -89,15 +89,7 @@ countyComplete %>%
 
 A conclusão a eque chegamos com um modelo assim é algo como:
 
-VarIndep1 = pobreza
-VarDep = escolaridade
+#VarIndep1 = bachareis
+#VarDep = renda per capita
 
-
-VarIndep1 = bachareis
-VarDep = renda per capita
-
-> Regressão linear simples foi utilizada para analisar a associação entre VarIndep1 e VarDep. Os resultados da regressão indicam que um modelo no formato VarDep = XXX.VarIndep1 + YYY explicam XX,XX% da variância da variável de resposta (R2 = XX,XX). O aumento de 1 unidade de VarIndep1 medida como/em [unidade] produz uma mudança de xxx em VarDep. Portanto...
-
->> Regressão linear simples foi utilizada para analisar a associação entre o nível bacharelado e a renda per capita. Os resultados da regressão indicam que um modelo no formato Renda Per Capita = 0.001*Bacharél - 9.53 explicam 62.78% da variância da variável de resposta (R2 = 0.62). O aumento de 1 unidade de Bacharél medida como porcentagem de pessoas que possuem o nível de bacharél produz um aumento de 0.001 na porcentagem esperada abaixo/acima da linha da Renda Per Capita.. Portanto...
-
-> Regressão linear simples foi utilizada para analisar a associação entre bacharéis e Renda Per Capita. Os resultados da regressão indicam que um modelo no formato ?bachareis? = 0.001*RendaPerCapita -9.53 explicam 62,78% da variância da variável de resposta (R2 = 0.62). O aumento de 1 unidade de RendaPerCapta medida como porcentagem de pessoas que completam o nível de bacharelado produz um aumento de 0.001 na porcetagem esperada de pessoas ?abaixo/acima? da linha de rendaPerCapita. Portanto...
+> Regressão linear simples foi utilizada para analisar a associação entre o nível bacharelado e a renda per capita. Os resultados da regressão indicam que um modelo no formato $RendaPerCapita = -9.53 + 0.001*Bacharel$ explicam 62.78% da variância da variável de resposta (R2 = 0.62). O aumento de 1 unidade do nível de bacharelado medida como porcentagem de pessoas que possuem o nível de bacharél produz um aumento de 0.001 na porcentagem esperada acima da linha da Renda Per Capita. Portanto, pode-se observar que existe uma relação plausível entre as duas variáveis e, que consequentemente, quanto maior o nível de escolaridade, também aumenta a renda per capita. No entanto, é importante analisar das demais variáveis na variável independente, para explicar melhora variância do modelo.
